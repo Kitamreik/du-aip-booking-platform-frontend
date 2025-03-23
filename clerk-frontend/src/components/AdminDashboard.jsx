@@ -8,11 +8,14 @@ function AdminDashboard() {
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState({ customer_name: "", service: "", booking_time: "" });
 
+  //URL: https://your-backend.onrender.com/api/bookings
   // Fetch bookings
   useEffect(() => {
     const fetchBookings = async () => {
       const token = await getToken();
-      const res = await fetch("http://localhost:3100/api/bookings", {
+      console.log("Clerk token:", token);
+      const res = await fetch(`http://localhost:${import.meta.env.PORT_CONNECTION}/api/bookings`, {
+        method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -21,7 +24,7 @@ function AdminDashboard() {
       setBookings(data);
     };
     fetchBookings();
-  }, );
+  }, []);
 
   // Timezone conversion helper
   const formatTime = (utcString) => {
@@ -43,7 +46,7 @@ function AdminDashboard() {
 
   const handleUpdate = async () => {
     const token = await getToken();
-    const res = await fetch(`http://localhost:3100/api/bookings/${editing}`, {
+    const res = await fetch(`http://localhost:${import.meta.env.PORT_CONNECTION}/api/bookings/${editing}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -60,7 +63,7 @@ function AdminDashboard() {
 
   const handleDelete = async (id) => {
     const token = await getToken();
-    await fetch(`http://localhost:3100/api/bookings/${id}`, {
+    await fetch(`http://localhost:${import.meta.env.PORT_CONNECTION}/api/bookings/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,

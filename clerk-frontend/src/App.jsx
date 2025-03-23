@@ -24,13 +24,14 @@ function Navigation() {
   );
 }
 
+//Retrieval troubleshoot
 function Dashboard() {
   const { userId, getToken } = useAuth();
 
   const callProtectedRoute = async () => {
     const token = await getToken(); // this is your Bearer token
 
-    const res = await fetch("http://localhost:3100/auth-state", {
+    const res = await fetch(`"http://localhost:${import.meta.env.PORT_CONNECTION}/auth-state"`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -51,6 +52,60 @@ function Dashboard() {
   );
 }
 
+function App() {
+  //const { isAdmin } = useRole();
+  return (
+    <>
+      <h1>Clerk + Vite + Express Demo</h1>
+      <nav>
+        <Link to="/">Home</Link> | <Link to="/sign-in">Sign In</Link> | <Link to="/sign-up">Sign Up</Link>
+        <br />
+        <Link to="/admin">Admin Dashboard</Link>
+      </nav>
+      <Routes>
+      <Route
+          path="/"
+          element={
+            <>
+              <SignedOut>
+                <p>Please sign in to continue.</p>
+              </SignedOut>
+              <SignedIn>
+                <Dashboard />
+              </SignedIn>
+            </>
+          }
+        />
+        <Route path="/sign-in" element={<SignIn routing="path" path="/sign-in" />} />
+        <Route path="/sign-up" element={<SignUp routing="path" path="/sign-up" />} />
+        <Route
+          path="/admin"
+          element={
+              <SignedIn>
+                {/* {isAdmin ? <AdminDashboard /> : <Navigate to="/" replace />} */}
+                <AdminDashboard />
+              </SignedIn>
+            //formerly
+            // <>
+            //   <SignedIn>
+            //     <AdminDashboard />
+            //   </SignedIn>
+            //   <SignedOut>
+            //     <SignIn />
+            //   </SignedOut>
+            // </>
+          }
+        />
+      </Routes>
+      <div className="card">
+        <p>
+          This is the index for the Front End.
+        </p>
+      </div>
+    </>
+  )
+}
+/*
 function App() {
   const { isAdmin } = useRole();
   return (
@@ -99,34 +154,18 @@ function App() {
     </div>
   );
 }
+*/
+
 
 export default App;
 
-//Template
+//Functional Template
 /*
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
       <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
         <p>
           Edit <code>src/App.jsx</code> and save to test HMR
         </p>
@@ -137,7 +176,6 @@ function App() {
     </>
   )
 }
-
 export default App
 
 */

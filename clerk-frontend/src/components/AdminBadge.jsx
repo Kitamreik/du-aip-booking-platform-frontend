@@ -2,7 +2,7 @@ import { useRole } from "../hooks/useRole";
 
 function AdminBadge() {
   const { isAdmin } = useRole();
-
+   
   if (!isAdmin) return null;
 
   return (
