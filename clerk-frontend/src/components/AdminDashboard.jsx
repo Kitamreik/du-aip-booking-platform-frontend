@@ -24,7 +24,7 @@ function AdminDashboard() {
       setBookings(data);
     };
     fetchBookings();
-  }, []);
+  });
 
   // Timezone conversion helper
   const formatTime = (utcString) => {
