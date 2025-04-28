@@ -1,5 +1,6 @@
 import { SignIn, SignUp, SignedIn, SignedOut, UserButton, useAuth } from "@clerk/clerk-react";
 import { Routes, Route, Link } from "react-router-dom";
+import { useNavigate } from "react-router";
 import AdminDashboard from "./components/AdminDashboard";
 import AdminBadge from "./components/AdminBadge";
 import { useRole } from "./hooks/useRole";
@@ -27,27 +28,58 @@ function Navigation() {
 //Retrieval troubleshoot
 function Dashboard() {
   const { userId, getToken } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    fetch(`http://localhost:5173/logout`)
+      .then((response) => response.json())
+      .then((result) => {
+        console.log("result :>> ", result);
+        localStorage.removeItem("user");
+        navigate("/");
+      })
+      .catch((error) => {
+        console.log("error :>> ", error);
+        navigate("/admin");
+      });
+  };
 
   const callProtectedRoute = async () => {
     const token = await getToken(); // this is your Bearer token
 
-    const res = await fetch(`"http://localhost:${import.meta.env.PORT_CONNECTION}/auth-state"`, {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/bookings`, {
+      method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
+
+    console.log("Raw response:", res);
+
+    if (!res.ok) {
+      const text = await res.text(); // <- DON'T parse as JSON yet
+      console.error("Server error:", text);
+      throw new Error("Backend error");
+    }
+    //Error handle the res before showing data
 
     const data = await res.json();
     console.log("Protected response:", data);
   };
 
 
+
   return (
     <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
       <h2>Dashboard</h2>
       <p>User ID: {userId}</p>
-      <button onClick={callProtectedRoute}>Call Protected Route</button>
+      <button onClick={callProtectedRoute}><a href="#">Call Protected Route</a></button>
       <UserButton />
+        <button style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+          <a href="#" onClick={handleLogout}>
+            LOGOUT
+          </a>
+        </button>
     </div>
   );
 }
@@ -105,6 +137,7 @@ function App() {
     </>
   )
 }
+
 /*
 function App() {
   const { isAdmin } = useRole();
