@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { useAuth } from "@clerk/clerk-react";
 
+
+
 export function useApiFetchWithSearch(endpoint, options = {}, itemsPerPage = 10) {
   const { getToken } = useAuth();
   const [originalData, setOriginalData] = useState([]);
@@ -36,12 +38,12 @@ export function useApiFetchWithSearch(endpoint, options = {}, itemsPerPage = 10)
       setOriginalData(data);
       setFilteredData(data); // initial full load
     } catch (err) {
-      console.error("API Fetch Error:", err);
+      // console.error("API Fetch Error:", err); //okay for development
       setError(err.message || "Unknown error");
     } finally {
       setLoading(false);
     }
-  }, [endpoint, options, getToken]);
+  }, [endpoint, options, getToken]); //exclude endpoint from dep array to prevent crashing
 
   useEffect(() => {
     fetchData();

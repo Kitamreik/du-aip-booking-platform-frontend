@@ -1,0 +1,61 @@
+:root {
+    --bg: #fdfaf7;
+    --text: #1f1f1f;
+    --card-bg: #fff;
+    --header-bg: #e9decf;
+    --footer-bg: #ded6c1;
+  }
+  
+  .dark {
+    --bg: #1e1e1e;
+    --text: #f3f3f3;
+    --card-bg: #2c2c2c;
+    --header-bg: #3a3a3a;
+    --footer-bg: #2a2a2a;
+  }
+  
+  body, html {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: "Segoe UI", sans-serif;
+  }
+  
+  .header {
+    background-color: var(--header-bg);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .header a {
+    margin-right: 1rem;
+    text-decoration: none;
+    color: var(--text);
+  }
+  
+  .header button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text);
+    font-weight: bold;
+  }
+  
+  .logo {
+    font-size: 1.5rem;
+  }
+  
+  .main {
+    padding: 2rem;
+  }
+  
+  .footer {
+    text-align: center;
+    background-color: var(--footer-bg);
+    padding: 1rem;
+    font-size: 0.9rem;
+  }
+  
